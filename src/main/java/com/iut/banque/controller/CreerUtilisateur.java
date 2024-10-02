@@ -3,6 +3,7 @@ package com.iut.banque.controller;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+import com.iut.banque.utils.UtilsFunctions;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -203,13 +204,7 @@ public class CreerUtilisateur extends ActionSupport {
 	 */
 	public String creationUtilisateur() {
 		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			byte[] hashed = md.digest(userPwd.getBytes());
-			StringBuilder sb = new StringBuilder();
-			for(byte b : hashed) {
-				sb.append(String.format("%02x", b));
-			}
-			String hashedUserPwd = sb.toString();
+			String hashedUserPwd = UtilsFunctions.sha512Hash(userPwd);;
 
 			if (client) {
 				banque.createClient(userId, hashedUserPwd, nom, prenom, adresse, male, numClient);

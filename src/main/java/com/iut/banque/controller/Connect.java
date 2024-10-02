@@ -13,6 +13,7 @@ import com.iut.banque.modele.Client;
 import com.iut.banque.modele.Compte;
 import com.iut.banque.modele.Utilisateur;
 import com.opensymphony.xwork2.ActionSupport;
+import com.iut.banque.utils.UtilsFunctions;
 
 public class Connect extends ActionSupport {
 
@@ -52,16 +53,9 @@ public class Connect extends ActionSupport {
 
 		int loginResult;
 		try {
-						//Hashage de l'input avant comparaison des hash
-						MessageDigest md = MessageDigest.getInstance("SHA-512");
-						byte[] hashed = md.digest(userPwd.getBytes());
-						StringBuilder sb = new StringBuilder();
-						for(byte b : hashed) {
-							sb.append(String.format("%02x", b));
-						}
-						String hashedUserPwd = sb.toString();
-						// ----------------------------------------------------------------------
-						loginResult = banque.tryLogin(userCde, hashedUserPwd);
+			//Hashage de l'input avant comparaison des hash
+			String hashedUserPwd = UtilsFunctions.sha512Hash(userPwd);
+			loginResult = banque.tryLogin(userCde, hashedUserPwd);
 		} catch (Exception e) {
 			e.printStackTrace();
 			loginResult = LoginConstants.ERROR;
