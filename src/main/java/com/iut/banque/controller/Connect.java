@@ -1,5 +1,6 @@
 package com.iut.banque.controller;
 
+import java.security.MessageDigest;
 import java.util.Map;
 
 import org.apache.struts2.ServletActionContext;
@@ -51,7 +52,16 @@ public class Connect extends ActionSupport {
 
 		int loginResult;
 		try {
-			loginResult = banque.tryLogin(userCde, userPwd);
+						//Hashage de l'input avant comparaison des hash
+						MessageDigest md = MessageDigest.getInstance("SHA-512");
+						byte[] hashed = md.digest(userPwd.getBytes());
+						StringBuilder sb = new StringBuilder();
+						for(byte b : hashed) {
+							sb.append(String.format("%02x", b));
+						}
+						String hashedUserPwd = sb.toString();
+						// ----------------------------------------------------------------------
+						loginResult = banque.tryLogin(userCde, hashedUserPwd);
 		} catch (Exception e) {
 			e.printStackTrace();
 			loginResult = LoginConstants.ERROR;
