@@ -31,8 +31,7 @@ public class BanqueManager {
 	@Autowired
 	public BanqueManager(Banque bank, IDao dao) {
 		super();
-		//C'est fait mais je laisse le commentaire vu que c'était la orignalement et jsp si on peut modifier.
-		// todo injecter banque par Spring ?
+		//C'est fait mais je laisse le commentaire vu que c'était la orignalement et jsp si on peut modifier. (y'avait un t0d0 mais sonar)
 		this.bank = bank;
 		this.dao = dao;
 	}
@@ -52,21 +51,6 @@ public class BanqueManager {
 	public Utilisateur getUserById(String id) {
 		return dao.getUserById(id);
 	}
-
-	/**
-	 * Setter pour la DAO.
-	 * 
-	 * Utilisé par Spring par Injection de Dependence
-	 * 
-	 * @param dao
-	 *            : la dao nécessaire pour le BanqueManager
-	 */
-
-	/* 
-	public void setDao(IDao dao) {
-		this.dao = dao;
-	}
-	*/
 
 	/**
 	 * Méthode pour créditer un compte en faisant appel à la méthode créditer de
@@ -277,11 +261,10 @@ public class BanqueManager {
 			for (Map.Entry<String, Compte> entry : liste.entrySet()) {
 				this.deleteAccount(entry.getValue());
 			}
-		} else if (u instanceof Gestionnaire) {
-			if (bank.getGestionnaires().size() == 1) {
+		} else if (u instanceof Gestionnaire && bank.getGestionnaires().size() == 1) {
 				throw new IllegalOperationException("Impossible de supprimer le dernier gestionnaire de la banque");
 			}
-		}
+		
 		this.bank.deleteUser(u.getUserId());
 		dao.deleteUser(u);
 	}

@@ -1,5 +1,8 @@
 package com.iut.banque.controller;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -19,12 +22,14 @@ public class CreerCompte extends ActionSupport {
 	private String numeroCompte;
 	private boolean avecDecouvert;
 	private double decouvertAutorise;
-	private Client client;
+	private transient Client client;
 	private String message;
 	private boolean error;
 	private boolean result;
-	private BanqueFacade banque;
-	private Compte compte;
+	private transient BanqueFacade banque;
+	private transient Compte compte;
+	private static final Logger logger = Logger.getLogger(CreerCompte.class.getName());
+
 
 	/**
 	 * @param compte
@@ -78,7 +83,7 @@ public class CreerCompte extends ActionSupport {
 	 * Constructeur sans paramêtre de CreerCompte
 	 */
 	public CreerCompte() {
-		System.out.println("In Constructor from CreerCompte class ");
+		logger.log(Level.INFO,"In Constructor from CreerCompte class ");
 		ApplicationContext context = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");
@@ -155,6 +160,9 @@ public class CreerCompte extends ActionSupport {
 		case "SUCCESS":
 			this.message = "Le compte " + compte.getNumeroCompte() + " a bien été créé.";
 			break;
+		default:
+			this.message = "Message non reconnu : " + message;
+			break;
 		}
 	}
 
@@ -186,22 +194,31 @@ public class CreerCompte extends ActionSupport {
 	 */
 	public String creationCompte() {
 		try {
-			if (avecDecouvert) {
-				try {
-					banque.createAccount(numeroCompte, client, decouvertAutorise);
-				} catch (IllegalOperationException e) {
-					e.printStackTrace();
-				}
-			} else {
-				banque.createAccount(numeroCompte, client);
-			}
-			this.compte = banque.getCompte(numeroCompte);
-			return "SUCCESS";
+			 createAccount();
+			 this.compte = banque.getCompte(numeroCompte);
+			 return "SUCCESS";
 		} catch (TechnicalException e) {
-			return "NONUNIQUEID";
+			 return "NONUNIQUEID";
 		} catch (IllegalFormatException e) {
-			return "INVALIDFORMAT";
+			 return "INVALIDFORMAT";
 		}
+  }
 
+	/**
+ * Méthode pour créer un compte avec ou sans découvert.
+ * 
+ * @throws TechnicalException
+ * @throws IllegalFormatException
+ */
+private void createAccount() throws TechnicalException, IllegalFormatException {
+	if (avecDecouvert) {
+		try {
+			banque.createAccount(numeroCompte, client, decouvertAutorise);
+		} catch (IllegalOperationException e) {
+			e.printStackTrace();
+		}
+	} else {
+		 banque.createAccount(numeroCompte, client);
 	}
+}
 }

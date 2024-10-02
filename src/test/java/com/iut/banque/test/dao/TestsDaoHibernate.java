@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.util.Map;
+import java.util.Collections;
+
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -194,7 +196,7 @@ public class TestsDaoHibernate {
 	@Test
 	public void testGetAccountsByUserIdDoesntExist() {
 		Map<String, Compte> accounts = daoHibernate.getAccountsByClientId("c.doesntexit");
-		if (accounts != null) {
+		if (!accounts.isEmpty()) {
 			fail("Les comptes de cette utilisateur inexistant n'aurait pas du être renvoyés.");
 		}
 	}

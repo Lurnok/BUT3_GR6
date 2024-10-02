@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 
 public class UtilsFunctions {
 
+    private UtilsFunctions(){}
 
     // Hashe l'input en SHA-512, handle de l'exception necessaire
     public static String sha512Hash(String input) throws NoSuchAlgorithmException {

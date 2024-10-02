@@ -1,13 +1,16 @@
 package com.iut.banque.converter;
 
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import org.apache.struts2.util.StrutsTypeConverter;
 
 import com.opensymphony.xwork2.conversion.TypeConversionException;
-
 import com.iut.banque.interfaces.IDao;
 import com.iut.banque.modele.Compte;
+
+
 
 /**
  * Cette classe contient des méthodes permettant de convertir un compte en
@@ -31,28 +34,15 @@ public class AccountConverter extends StrutsTypeConverter {
 	 * instanciés et seulement le premier a une DAO injectée correctement.
 	 */
 	private static IDao dao;
+	private static final Logger logger = Logger.getLogger(AccountConverter.class.getName());
 
-	/**
-	 * Constructeur avec paramêtre pour le AccountConverter.
-	 * 
-	 * Utilisé pour l'injection de dépendance.
-	 * 
-	 * @param dao
-	 */
-	public AccountConverter(IDao dao) {
-		System.out.println("=========================");
-		System.out.println("Création du convertisseur de compte");
-		AccountConverter.dao = dao;
-		//System.out.println("DAO injectée : " + dao);
-	}
 
 	/**
 	 * 	Constructeur sans paramêtre pour le AccountConverter
 	 */
 	public AccountConverter() {
-		System.out.println("=========================");
-		System.out.println("Création du convertisseur de compte");
-		//System.out.println("DAO : " + dao);
+		logger.log(Level.INFO ,"=========================");
+		logger.log(Level.INFO ,"Création du convertisseur de compte");
 	}
 
 	/**
@@ -62,7 +52,7 @@ public class AccountConverter extends StrutsTypeConverter {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Object convertFromString(Map context, String[] values, Class classe) {
-		Compte compte = (Compte) dao.getAccountById(values[0]);
+		Compte compte = dao.getAccountById(values[0]);
 		if (compte == null) {
 			throw new TypeConversionException("Impossible de convertir la chaine suivante : " + values[0]);
 		}

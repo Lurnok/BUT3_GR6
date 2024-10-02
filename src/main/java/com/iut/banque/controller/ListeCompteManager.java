@@ -1,6 +1,8 @@
 package com.iut.banque.controller;
 
 import java.util.Map;
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -17,12 +19,14 @@ import com.iut.banque.modele.Compte;
 public class ListeCompteManager extends ActionSupport {
 
 	private static final long serialVersionUID = 1L;
-	private BanqueFacade banque;
+	private transient BanqueFacade banque;
 	private boolean aDecouvert;
-	private Compte compte;
-	private Client client;
+	private transient Compte compte;
+	private transient Client client;
 	private String userInfo;
 	private String compteInfo;
+	private static final Logger logger = Logger.getLogger(ListeCompteManager.class.getName());
+
 
 	/**
 	 * Constructeur de la classe Connect
@@ -31,7 +35,7 @@ public class ListeCompteManager extends ActionSupport {
 	 *         factory
 	 */
 	public ListeCompteManager() {
-		System.out.println("In Constructor from ListeCompteManager class ");
+		logger.log(Level.INFO ,"In Constructor from ListeCompteManager class ");
 		ApplicationContext context = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");

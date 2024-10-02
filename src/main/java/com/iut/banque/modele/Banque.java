@@ -16,6 +16,7 @@ public class Banque {
 	private Map<String, Compte> accounts;
 
 	public Banque() {
+		// C'est vide.
 	}
 
 	/**

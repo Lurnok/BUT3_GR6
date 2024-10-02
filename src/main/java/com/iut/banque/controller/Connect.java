@@ -1,7 +1,9 @@
 package com.iut.banque.controller;
 
-import java.security.MessageDigest;
 import java.util.Map;
+
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -20,7 +22,10 @@ public class Connect extends ActionSupport {
 	private static final long serialVersionUID = 1L;
 	private String userCde;
 	private String userPwd;
-	private final BanqueFacade banque;
+	private final transient BanqueFacade banque;
+
+	private static final Logger logger = Logger.getLogger(Connect.class.getName());
+	private static final String ERROR = "ERROR";
 
 	/**
 	 * Constructeur de la classe Connect
@@ -29,7 +34,7 @@ public class Connect extends ActionSupport {
 	 *         factory
 	 */
 	public Connect() {
-		System.out.println("In Constructor from Connect class ");
+		logger.log(Level.INFO, "In Constructor from Connect class ");
 		ApplicationContext context = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");
@@ -40,14 +45,14 @@ public class Connect extends ActionSupport {
 	 * Méthode pour vérifier la connexion de l'utilisateur basé sur les
 	 * paramêtres userCde et userPwd de cette classe
 	 * 
-	 * @return String, le resultat du login; "SUCCESS" si réussi, "ERROR" si
+	 * @return String, le resultat du login; "SUCCESS" si réussi, ERROR si
 	 *         échec
 	 */
 	public String login() {
-		System.out.println("Essai de login - 20180512...");
+		logger.log(Level.INFO,"Essai de login - 20180512...");
 
 		if (userCde == null || userPwd == null) {
-			return "ERROR";
+			return ERROR;
 		}
 		userCde = userCde.trim();
 
@@ -62,20 +67,20 @@ public class Connect extends ActionSupport {
 		}
 
 		switch (loginResult) {
-		case LoginConstants.USER_IS_CONNECTED:
-			System.out.println("user logged in");
-			return "SUCCESS";
-		case LoginConstants.MANAGER_IS_CONNECTED:
-			System.out.println("manager logged in");
-			return "SUCCESSMANAGER";
-		case LoginConstants.LOGIN_FAILED:
-			System.out.println("login failed");
-			return "ERROR";
-		default:
-			System.out.println("error");
-			return "ERROR";
-		}
-	}
+			case LoginConstants.USER_IS_CONNECTED:
+				 logger.log(Level.INFO, "user logged in");
+				 return "SUCCESS";
+			case LoginConstants.MANAGER_IS_CONNECTED:
+				 logger.log(Level.INFO, "manager logged in");
+				 return "SUCCESSMANAGER";
+			case LoginConstants.LOGIN_FAILED:
+				 logger.log(Level.INFO, "login failed");
+				 return ERROR;
+			default:
+				 logger.log(Level.SEVERE, "Unknown error");
+				 return ERROR;
+	  }
+ }
 
 	/**
 	 * Getter du champ userCde
@@ -137,7 +142,7 @@ public class Connect extends ActionSupport {
 	}
 
 	public String logout() {
-		System.out.println("Logging out");
+		logger.log(Level.INFO, "Logging out");
 		banque.logout();
 		return "SUCCESS";
 	}
