@@ -4,10 +4,9 @@ import java.util.Map;
 
 import org.apache.struts2.util.StrutsTypeConverter;
 
-import com.opensymphony.xwork2.conversion.TypeConversionException;
-
 import com.iut.banque.interfaces.IDao;
 import com.iut.banque.modele.Client;
+import com.opensymphony.xwork2.conversion.TypeConversionException;
 
 /**
  * Cette classe contient des méthodes permettant de convertir un client en
@@ -62,7 +61,8 @@ public class ClientConverter extends StrutsTypeConverter {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Object convertFromString(Map context, String[] values, Class classe) {
-		Client client = null;
+		Client client;
+		// = null;
 		client = (Client) dao.getUserById(values[0]);
 		if (client == null) {
 			throw new TypeConversionException("Impossible de convertir la chaine suivante : " + values[0]);

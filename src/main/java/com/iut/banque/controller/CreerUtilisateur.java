@@ -1,8 +1,5 @@
 package com.iut.banque.controller;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -203,18 +200,10 @@ public class CreerUtilisateur extends ActionSupport {
 	 */
 	public String creationUtilisateur() {
 		try {
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			byte[] hashed = md.digest(userPwd.getBytes());
-			StringBuilder sb = new StringBuilder();
-			for(byte b : hashed) {
-				sb.append(String.format("%02x", b));
-			}
-			String hashedUserPwd = sb.toString();
-
 			if (client) {
-				banque.createClient(userId, hashedUserPwd, nom, prenom, adresse, male, numClient);
+				banque.createClient(userId, userPwd, nom, prenom, adresse, male, numClient);
 			} else {
-				banque.createManager(userId, hashedUserPwd, nom, prenom, adresse, male);
+				banque.createManager(userId, userPwd, nom, prenom, adresse, male);
 			}
 			this.message = "Le nouvel utilisateur avec le user id '" + userId + "' a bien été crée.";
 			this.result = "SUCCESS";
@@ -233,10 +222,6 @@ public class CreerUtilisateur extends ActionSupport {
 			return "ERROR";
 		} catch (IllegalFormatException e) {
 			this.message = "Format du numéro de client incorrect.";
-			this.result = "ERROR";
-			return "ERROR";
-		} catch (NoSuchAlgorithmException e) {
-			this.message = "Algorithme de hashage non existant.";
 			this.result = "ERROR";
 			return "ERROR";
 		}

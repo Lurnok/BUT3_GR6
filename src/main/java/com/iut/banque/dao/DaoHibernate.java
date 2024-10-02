@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.iut.banque.exceptions.IllegalFormatException;
@@ -29,6 +30,7 @@ import com.iut.banque.modele.Utilisateur;
  * si une transaction est déjà commencé elle va être réutilisée. Cela est util
  * pour les tests unitaires de la DAO.
  */
+@Repository
 @Transactional
 public class DaoHibernate implements IDao {
 
@@ -189,11 +191,12 @@ public class DaoHibernate implements IDao {
 	 */
 	@Override
 	public boolean isUserAllowed(String userId, String userPwd) {
-		Session session = null;
+		Session session;
+		//= null;
 		if (userId == null || userPwd == null) {
 			return false;
 		} else {
-			session = sessionFactory.openSession();
+			//session = sessionFactory.openSession();
 			userId = userId.trim();
 			if ("".equals(userId) || "".equals(userPwd)) {
 				return false;
@@ -226,7 +229,8 @@ public class DaoHibernate implements IDao {
 		Session session = sessionFactory.getCurrentSession();
 		@SuppressWarnings("unchecked")
 		List<Object> res = session.createCriteria(Client.class).list();
-		Map<String, Client> ret = new HashMap<String, Client>();
+		//Map<String, Client> ret = new HashMap<String, Client>();
+		Map<String, Client> ret = new HashMap<>();
 		for (Object client : res) {
 			ret.put(((Client) client).getUserId(), (Client) client);
 		}
@@ -241,7 +245,8 @@ public class DaoHibernate implements IDao {
 		Session session = sessionFactory.getCurrentSession();
 		@SuppressWarnings("unchecked")
 		List<Object> res = session.createCriteria(Gestionnaire.class).list();
-		Map<String, Gestionnaire> ret = new HashMap<String, Gestionnaire>();
+		//Map<String, Gestionnaire> ret = new HashMap<String, Gestionnaire>();
+		Map<String, Gestionnaire> ret = new HashMap<>();
 		for (Object gestionnaire : res) {
 			ret.put(((Gestionnaire) gestionnaire).getUserId(), (Gestionnaire) gestionnaire);
 		}

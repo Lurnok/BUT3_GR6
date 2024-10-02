@@ -1,27 +1,24 @@
 package com.iut.banque.controller;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.security.MessageDigest;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import com.opensymphony.xwork2.ActionSupport;
 
 import com.iut.banque.constants.LoginConstants;
 import com.iut.banque.facade.BanqueFacade;
 import com.iut.banque.modele.Client;
 import com.iut.banque.modele.Compte;
 import com.iut.banque.modele.Utilisateur;
+import com.opensymphony.xwork2.ActionSupport;
 
 public class Connect extends ActionSupport {
 
 	private static final long serialVersionUID = 1L;
 	private String userCde;
 	private String userPwd;
-	private BanqueFacade banque;
+	private final BanqueFacade banque;
 
 	/**
 	 * Constructeur de la classe Connect
@@ -54,16 +51,7 @@ public class Connect extends ActionSupport {
 
 		int loginResult;
 		try {
-			//Hashage de l'input avant comparaison des hash
-			MessageDigest md = MessageDigest.getInstance("SHA-512");
-			byte[] hashed = md.digest(userPwd.getBytes());
-			StringBuilder sb = new StringBuilder();
-			for(byte b : hashed) {
-				sb.append(String.format("%02x", b));
-			}
-			String hashedUserPwd = sb.toString();
-			// ----------------------------------------------------------------------
-			loginResult = banque.tryLogin(userCde, hashedUserPwd);
+			loginResult = banque.tryLogin(userCde, userPwd);
 		} catch (Exception e) {
 			e.printStackTrace();
 			loginResult = LoginConstants.ERROR;

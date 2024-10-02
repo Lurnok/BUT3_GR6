@@ -50,3 +50,4 @@ replay_pid*
 /dist/
 /nbdist/
 /.nb-gradle/
+update.sh

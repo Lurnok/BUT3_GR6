@@ -2,6 +2,9 @@ package com.iut.banque.facade;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.iut.banque.exceptions.IllegalFormatException;
 import com.iut.banque.exceptions.IllegalOperationException;
 import com.iut.banque.exceptions.InsufficientFundsException;
@@ -14,20 +17,24 @@ import com.iut.banque.modele.CompteAvecDecouvert;
 import com.iut.banque.modele.Gestionnaire;
 import com.iut.banque.modele.Utilisateur;
 
+@Component
 public class BanqueManager {
 
-	private Banque bank;
-	private IDao dao;
+	private final Banque bank;
+	private final IDao dao;
 
 	/**
 	 * Constructeur du BanqueManager
 	 * 
 	 * @return BanqueManager : un nouvel objet BanqueManager
 	 */
-	public BanqueManager() {
+	@Autowired
+	public BanqueManager(Banque bank, IDao dao) {
 		super();
-		// TODO injecter banque par Spring ?
-		bank = new Banque();
+		//C'est fait mais je laisse le commentaire vu que c'était la orignalement et jsp si on peut modifier.
+		// todo injecter banque par Spring ?
+		this.bank = bank;
+		this.dao = dao;
 	}
 
 	/**
@@ -54,9 +61,12 @@ public class BanqueManager {
 	 * @param dao
 	 *            : la dao nécessaire pour le BanqueManager
 	 */
+
+	/* 
 	public void setDao(IDao dao) {
 		this.dao = dao;
 	}
+	*/
 
 	/**
 	 * Méthode pour créditer un compte en faisant appel à la méthode créditer de
@@ -288,5 +298,7 @@ public class BanqueManager {
 		bank.changeDecouvert(compte, nouveauDecouvert);
 		dao.updateAccount(compte);
 	}
+
+	
 
 }
