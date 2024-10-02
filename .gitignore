@@ -50,3 +50,5 @@ replay_pid*
 /dist/
 /nbdist/
 /.nb-gradle/
+
+WebContent/WEB-INF/applicationContext.xml
