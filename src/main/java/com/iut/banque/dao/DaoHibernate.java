@@ -23,6 +23,7 @@ import com.iut.banque.modele.Compte;
 import com.iut.banque.modele.CompteAvecDecouvert;
 import com.iut.banque.modele.CompteSansDecouvert;
 import com.iut.banque.modele.Gestionnaire;
+import com.iut.banque.modele.UserCreationParams;
 import com.iut.banque.modele.Utilisateur;
 
 /**
@@ -152,10 +153,17 @@ public class DaoHibernate implements IDao {
 	 * @throws IllegalArgumentException
 	 */
 	@Override
-	public Utilisateur createUser(String nom, String prenom, String adresse, boolean male, String userId,
-			String userPwd, boolean manager, String numClient)
+	public Utilisateur createUser(UserCreationParams params)
 			throws TechnicalException, IllegalArgumentException, IllegalFormatException {
 		Session session = sessionFactory.getCurrentSession();
+		String nom = params.getNom();
+        String prenom = params.getPrenom();
+        String adresse = params.getAdresse();
+        boolean male = params.isMale();
+        String userId = params.getUsrId();
+        String userPwd = params.getUsrPwd();
+        boolean manager = params.isManager();
+        String numClient = params.getNumClient();
 
 		Utilisateur user = session.get(Utilisateur.class, userId);
 		if (user != null) {

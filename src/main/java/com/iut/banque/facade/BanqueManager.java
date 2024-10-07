@@ -15,6 +15,7 @@ import com.iut.banque.modele.Client;
 import com.iut.banque.modele.Compte;
 import com.iut.banque.modele.CompteAvecDecouvert;
 import com.iut.banque.modele.Gestionnaire;
+import com.iut.banque.modele.UserCreationParams;
 import com.iut.banque.modele.Utilisateur;
 
 @Component
@@ -203,7 +204,17 @@ public class BanqueManager {
 	 */
 	public void createManager(String userId, String userPwd, String nom, String prenom, String adresse, boolean male)
 			throws TechnicalException, IllegalArgumentException, IllegalFormatException {
-		dao.createUser(nom, prenom, adresse, male, userId, userPwd, true, null);
+		UserCreationParams params = new UserCreationParams.Builder()
+			.setNom(nom)
+			.setPrenom(prenom)
+			.setAdresse(adresse)
+			.setMale(male)
+			.setUsrId(userId)
+			.setUsrPwd(userPwd)
+			.setManager(true)
+			.setNumClient(null)
+			.build();
+		dao.createUser(params);
 	}
 
 	/**
@@ -240,7 +251,17 @@ public class BanqueManager {
 						"Un client avec le numero de client " + numeroClient + " existe déjà");
 			}
 		}
-		dao.createUser(nom, prenom, adresse, male, userId, userPwd, false, numeroClient);
+		UserCreationParams params = new UserCreationParams.Builder()
+			.setNom(nom)
+			.setPrenom(prenom)
+			.setAdresse(adresse)
+			.setMale(male)
+			.setUsrId(userId)
+			.setUsrPwd(userPwd)
+			.setManager(false)
+			.setNumClient(numeroClient)
+			.build();
+		dao.createUser(params);
 
 	}
 

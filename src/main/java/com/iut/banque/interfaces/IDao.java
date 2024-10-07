@@ -10,6 +10,7 @@ import com.iut.banque.modele.Compte;
 import com.iut.banque.modele.CompteAvecDecouvert;
 import com.iut.banque.modele.CompteSansDecouvert;
 import com.iut.banque.modele.Gestionnaire;
+import com.iut.banque.modele.UserCreationParams;
 import com.iut.banque.modele.Utilisateur;
 
 public interface IDao {
@@ -107,9 +108,7 @@ public interface IDao {
 	 * @throws IllegalFormatException 
 	 * @throws IllegalArgumentException 
 	 */
-	Utilisateur createUser(String nom, String prenom, String adresse,
-			boolean male, String usrId, String usrPwd, boolean manager,
-			String numClient) throws TechnicalException, IllegalArgumentException, IllegalFormatException;
+    Utilisateur createUser(UserCreationParams params) throws TechnicalException, IllegalArgumentException, IllegalFormatException;
 
 	/**
 	 * Méthode pour supprimer un utilisateur (Client ou Gestionnaire)
