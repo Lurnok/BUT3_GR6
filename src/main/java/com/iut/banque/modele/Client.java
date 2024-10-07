@@ -206,14 +206,12 @@ public class Client extends Utilisateur {
 	 * @return boolean : résultat de l'interrogation
 	 */
 	public boolean possedeComptesADecouvert() {
-		boolean result = false;
 		for (Compte value : accounts.values()) {
-			if (!result && value.getSolde() < 0) {
-				result = true;
-				break;
+			if (value.getSolde() < 0) {
+				return true;
 			}
 		}
-		return result;
+		return false;
 	}
 
 	/**
