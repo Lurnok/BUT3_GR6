@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grammar ns="http://www.springframework.org/schema/beans" xmlns:tx="http://www.springframework.org/schema/tx" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://relaxng.org/ns/structure/1.0" datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+    <start>
+        <element name="beans">
+            <attribute name="xsi:schemaLocation"/>
+            <oneOrMore>
+                <choice>
+                    <element name="bean">
+                        <attribute name="class">
+                            <data type="NCName"/>
+                        </attribute>
+                        <attribute name="id">
+                            <data type="NCName"/>
+                        </attribute>
+                        <optional>
+                            <attribute name="scope">
+                                <data type="NCName"/>
+                            </attribute>
+                        </optional>
+                        <choice>
+                            <oneOrMore>
+                                <element name="property">
+                                    <attribute name="name">
+                                        <data type="NCName"/>
+                                    </attribute>
+                                    <optional>
+                                        <attribute name="ref">
+                                            <data type="NCName"/>
+                                        </attribute>
+                                    </optional>
+                                    <optional>
+                                        <attribute name="value">
+                                            <data type="anyURI"/>
+                                        </attribute>
+                                    </optional>
+                                    <optional>
+                                        <element name="props">
+                                            <element name="prop">
+                                                <attribute name="key">
+                                                    <data type="NCName"/>
+                                                </attribute>
+                                                <text/>
+                                            </element>
+                                        </element>
+                                    </optional>
+                                </element>
+                            </oneOrMore>
+                            <oneOrMore>
+                                <element name="constructor-arg">
+                                    <attribute name="ref">
+                                        <data type="NCName"/>
+                                    </attribute>
+                                </element>
+                            </oneOrMore>
+                        </choice>
+                    </element>
+                    <element name="tx:annotation-driven">
+                        <attribute name="transaction-manager">
+                            <data type="NCName"/>
+                        </attribute>
+                    </element>
+                </choice>
+            </oneOrMore>
+        </element>
+    </start>
+</grammar>
