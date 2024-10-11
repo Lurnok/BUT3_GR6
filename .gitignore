@@ -50,5 +50,7 @@ replay_pid*
 /dist/
 /nbdist/
 /.nb-gradle/
+update.sh
+applicationContext.xml
 
-/WebContent/WEB-INF/applicationContext.xml
+

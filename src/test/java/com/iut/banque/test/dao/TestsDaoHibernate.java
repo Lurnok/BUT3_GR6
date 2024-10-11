@@ -6,6 +6,7 @@ import static org.junit.Assert.fail;
 
 import java.util.Map;
 
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import com.iut.banque.modele.CompteAvecDecouvert;
 import com.iut.banque.modele.CompteSansDecouvert;
 import com.iut.banque.modele.Gestionnaire;
 import com.iut.banque.modele.Utilisateur;
+import com.iut.banque.modele.UserCreationParams;
+
 
 /**
  * Class de test pour la DAO.
@@ -194,7 +197,7 @@ public class TestsDaoHibernate {
 	@Test
 	public void testGetAccountsByUserIdDoesntExist() {
 		Map<String, Compte> accounts = daoHibernate.getAccountsByClientId("c.doesntexit");
-		if (accounts != null) {
+		if (!accounts.isEmpty()) {
 			fail("Les comptes de cette utilisateur inexistant n'aurait pas du être renvoyés.");
 		}
 	}
@@ -211,7 +214,18 @@ public class TestsDaoHibernate {
 	public void testCreateUser() {
 		try {
 			try {
-				daoHibernate.createUser("NOM", "PRENOM", "ADRESSE", true, "c.new1", "PASS", false, "5544554455");
+				UserCreationParams params = new UserCreationParams.Builder()
+					.setNom("NOM")
+					.setPrenom("PRENOM")
+					.setAdresse("ADRESSE")
+					.setMale(true)
+					.setUsrId("c.new1")
+					.setUsrPwd("PASS")
+					.setManager(false)
+					.setNumClient("5544554455")
+					.build();
+
+				daoHibernate.createUser(params);
 			} catch (IllegalArgumentException e) {
 				fail("Il ne devrait pas y avoir d'exception ici");
 			} catch (IllegalFormatException e) {
@@ -233,7 +247,18 @@ public class TestsDaoHibernate {
 	public void testCreateUserExistingId() {
 		try {
 			try {
-				daoHibernate.createUser("NOM", "PRENOM", "ADRESSE", true, "c.exist", "PASS", false, "9898989898");
+				UserCreationParams params = new UserCreationParams.Builder()
+					.setNom("NOM")
+					.setPrenom("PRENOM")
+					.setAdresse("ADRESSE")
+					.setMale(true)
+					.setUsrId("c.exist")
+					.setUsrPwd("PASS")
+					.setManager(false)
+					.setNumClient("9898989898")
+					.build();
+
+				daoHibernate.createUser(params);
 			} catch (IllegalArgumentException e) {
 				fail("Il ne devrait pas y avoir d'exception ici");
 				e.printStackTrace();
@@ -251,7 +276,18 @@ public class TestsDaoHibernate {
 	public void testCreateGestionnaire() {
 		try {
 			try {
-				daoHibernate.createUser("NOM", "PRENOM", "ADRESSE", true, "g.new", "PASS", true, "9898989898");
+				UserCreationParams params = new UserCreationParams.Builder()
+					.setNom("NOM")
+					.setPrenom("PRENOM")
+					.setAdresse("ADRESSE")
+					.setMale(true)
+					.setUsrId("g.new")
+					.setUsrPwd("PASS")
+					.setManager(true)
+					.setNumClient("9898989898")
+					.build();
+
+				daoHibernate.createUser(params);
 			} catch (IllegalArgumentException | IllegalFormatException e) {
 				fail("Il ne devrait pas y avoir d'exception ici");
 				e.printStackTrace();
@@ -269,7 +305,18 @@ public class TestsDaoHibernate {
 	public void testCreateClient() {
 		try {
 			try {
-				daoHibernate.createUser("NOM", "PRENOM", "ADRESSE", true, "c.new1", "PASS", false, "9898989898");
+				UserCreationParams params = new UserCreationParams.Builder()
+					.setNom("NOM")
+					.setPrenom("PRENOM")
+					.setAdresse("ADRESSE")
+					.setMale(true)
+					.setUsrId("c.new1")
+					.setUsrPwd("PASS")
+					.setManager(false)
+					.setNumClient("9898989898")
+					.build();
+
+				daoHibernate.createUser(params);
 			} catch (IllegalArgumentException | IllegalFormatException e) {
 				fail("Il ne devrait pas y avoir d'exception ici");
 				e.printStackTrace();

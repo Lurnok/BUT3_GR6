@@ -2,10 +2,13 @@ package com.iut.banque.modele;
 
 import java.util.Map;
 
+import org.springframework.stereotype.Component;
+
 import com.iut.banque.exceptions.IllegalFormatException;
 import com.iut.banque.exceptions.IllegalOperationException;
 import com.iut.banque.exceptions.InsufficientFundsException;
 
+@Component
 public class Banque {
 
 	private Map<String, Client> clients;
@@ -13,6 +16,7 @@ public class Banque {
 	private Map<String, Compte> accounts;
 
 	public Banque() {
+		// C'est vide.
 	}
 
 	/**

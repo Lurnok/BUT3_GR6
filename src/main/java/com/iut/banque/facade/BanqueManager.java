@@ -2,6 +2,9 @@ package com.iut.banque.facade;
 
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import com.iut.banque.exceptions.IllegalFormatException;
 import com.iut.banque.exceptions.IllegalOperationException;
 import com.iut.banque.exceptions.InsufficientFundsException;
@@ -12,22 +15,26 @@ import com.iut.banque.modele.Client;
 import com.iut.banque.modele.Compte;
 import com.iut.banque.modele.CompteAvecDecouvert;
 import com.iut.banque.modele.Gestionnaire;
+import com.iut.banque.modele.UserCreationParams;
 import com.iut.banque.modele.Utilisateur;
 
+@Component
 public class BanqueManager {
 
-	private Banque bank;
-	private IDao dao;
+	private final Banque bank;
+	private final IDao dao;
 
 	/**
 	 * Constructeur du BanqueManager
 	 * 
 	 * @return BanqueManager : un nouvel objet BanqueManager
 	 */
-	public BanqueManager() {
+	@Autowired
+	public BanqueManager(Banque bank, IDao dao) {
 		super();
-		// TODO injecter banque par Spring ?
-		bank = new Banque();
+		//C'est fait mais je laisse le commentaire vu que c'était la orignalement et jsp si on peut modifier. (y'avait un t0d0 mais sonar)
+		this.bank = bank;
+		this.dao = dao;
 	}
 
 	/**
@@ -44,18 +51,6 @@ public class BanqueManager {
 	 */
 	public Utilisateur getUserById(String id) {
 		return dao.getUserById(id);
-	}
-
-	/**
-	 * Setter pour la DAO.
-	 * 
-	 * Utilisé par Spring par Injection de Dependence
-	 * 
-	 * @param dao
-	 *            : la dao nécessaire pour le BanqueManager
-	 */
-	public void setDao(IDao dao) {
-		this.dao = dao;
 	}
 
 	/**
@@ -209,7 +204,17 @@ public class BanqueManager {
 	 */
 	public void createManager(String userId, String userPwd, String nom, String prenom, String adresse, boolean male)
 			throws TechnicalException, IllegalArgumentException, IllegalFormatException {
-		dao.createUser(nom, prenom, adresse, male, userId, userPwd, true, null);
+		UserCreationParams params = new UserCreationParams.Builder()
+			.setNom(nom)
+			.setPrenom(prenom)
+			.setAdresse(adresse)
+			.setMale(male)
+			.setUsrId(userId)
+			.setUsrPwd(userPwd)
+			.setManager(true)
+			.setNumClient(null)
+			.build();
+		dao.createUser(params);
 	}
 
 	/**
@@ -246,7 +251,17 @@ public class BanqueManager {
 						"Un client avec le numero de client " + numeroClient + " existe déjà");
 			}
 		}
-		dao.createUser(nom, prenom, adresse, male, userId, userPwd, false, numeroClient);
+		UserCreationParams params = new UserCreationParams.Builder()
+			.setNom(nom)
+			.setPrenom(prenom)
+			.setAdresse(adresse)
+			.setMale(male)
+			.setUsrId(userId)
+			.setUsrPwd(userPwd)
+			.setManager(false)
+			.setNumClient(numeroClient)
+			.build();
+		dao.createUser(params);
 
 	}
 
@@ -267,11 +282,10 @@ public class BanqueManager {
 			for (Map.Entry<String, Compte> entry : liste.entrySet()) {
 				this.deleteAccount(entry.getValue());
 			}
-		} else if (u instanceof Gestionnaire) {
-			if (bank.getGestionnaires().size() == 1) {
+		} else if (u instanceof Gestionnaire && bank.getGestionnaires().size() == 1) {
 				throw new IllegalOperationException("Impossible de supprimer le dernier gestionnaire de la banque");
 			}
-		}
+		
 		this.bank.deleteUser(u.getUserId());
 		dao.deleteUser(u);
 	}
@@ -288,5 +302,7 @@ public class BanqueManager {
 		bank.changeDecouvert(compte, nouveauDecouvert);
 		dao.updateAccount(compte);
 	}
+
+	
 
 }

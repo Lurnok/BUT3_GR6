@@ -1,5 +1,11 @@
 package com.iut.banque.controller;
 
+import java.util.logging.Logger;
+import java.util.logging.Level;
+
+import java.security.NoSuchAlgorithmException;
+
+import com.iut.banque.utils.UtilsFunctions;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -13,7 +19,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class CreerUtilisateur extends ActionSupport {
 
 	private static final long serialVersionUID = 1L;
-	private BanqueFacade banque;
+	private transient BanqueFacade banque;
 	private String userId;
 	private String nom;
 	private String prenom;
@@ -24,6 +30,8 @@ public class CreerUtilisateur extends ActionSupport {
 	private String numClient;
 	private String message;
 	private String result;
+	private static final Logger logger = Logger.getLogger(CreerUtilisateur.class.getName());
+	private static final String ERROR = "ERROR";
 
 	/**
 	 * @return the userId
@@ -149,7 +157,7 @@ public class CreerUtilisateur extends ActionSupport {
 	 * Constructeur sans paramêtre de CreerUtilisateur
 	 */
 	public CreerUtilisateur() {
-		System.out.println("In Constructor from CreerUtilisateur class ");
+		logger.log(Level.INFO,"In Constructor from CreerUtilisateur class ");
 		ApplicationContext context = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
 		this.banque = (BanqueFacade) context.getBean("banqueFacade");
@@ -200,30 +208,36 @@ public class CreerUtilisateur extends ActionSupport {
 	 */
 	public String creationUtilisateur() {
 		try {
+			String hashedUserPwd = UtilsFunctions.sha512Hash(userPwd);
+
 			if (client) {
-				banque.createClient(userId, userPwd, nom, prenom, adresse, male, numClient);
+				banque.createClient(userId, hashedUserPwd, nom, prenom, adresse, male, numClient);
 			} else {
-				banque.createManager(userId, userPwd, nom, prenom, adresse, male);
+				banque.createManager(userId, hashedUserPwd, nom, prenom, adresse, male);
 			}
 			this.message = "Le nouvel utilisateur avec le user id '" + userId + "' a bien été crée.";
 			this.result = "SUCCESS";
 			return "SUCCESS";
 		} catch (IllegalOperationException e) {
 			this.message = "L'identifiant à déjà été assigné à un autre utilisateur de la banque.";
-			this.result = "ERROR";
-			return "ERROR";
+			this.result = ERROR;
+			return ERROR;
 		} catch (TechnicalException e) {
 			this.message = "Le numéro de client est déjà assigné à un autre client.";
-			this.result = "ERROR";
-			return "ERROR";
+			this.result = ERROR;
+			return ERROR;
 		} catch (IllegalArgumentException e) {
 			this.message = "Le format de l'identifiant est incorrect.";
-			this.result = "ERROR";
-			return "ERROR";
+			this.result = ERROR;
+			return ERROR;
 		} catch (IllegalFormatException e) {
 			this.message = "Format du numéro de client incorrect.";
-			this.result = "ERROR";
-			return "ERROR";
+			this.result = ERROR;
+			return ERROR;
+		} catch (NoSuchAlgorithmException e) {
+			this.message = "Algorithme de hashage non existant.";
+			this.result = ERROR;
+			return ERROR;
 		}
 	}
 }

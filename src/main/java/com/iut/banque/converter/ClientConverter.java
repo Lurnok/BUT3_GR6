@@ -4,10 +4,12 @@ import java.util.Map;
 
 import org.apache.struts2.util.StrutsTypeConverter;
 
-import com.opensymphony.xwork2.conversion.TypeConversionException;
-
 import com.iut.banque.interfaces.IDao;
 import com.iut.banque.modele.Client;
+import com.opensymphony.xwork2.conversion.TypeConversionException;
+
+import java.util.logging.Logger;
+import java.util.logging.Level;
 
 /**
  * Cette classe contient des méthodes permettant de convertir un client en
@@ -31,28 +33,17 @@ public class ClientConverter extends StrutsTypeConverter {
 	 * instanciés et seulement le premier a une DAO injectée correctement.
 	 */
 	private static IDao dao;
+	private static final Logger logger = Logger.getLogger(ClientConverter.class.getName());
 
-	/**
-	 * Constructeur avec paramêtre pour le ClientConverter.
-	 * 
-	 * Utilisé pour l'injection de dépendance.
-	 * 
-	 * @param dao
-	 */
-	public ClientConverter(IDao dao) {
-		System.out.println("=========================");
-		System.out.println("Création du convertisseur de client");
-		ClientConverter.dao = dao;
-		// System.out.println("DAO injectée : " + dao);
-	}
+
+	
 
 	/**
 	 * Constructeur sans paramêtre pour le ClientConverter
 	 */
 	public ClientConverter() {
-		System.out.println("=========================");
-		System.out.println("Création du convertisseur de client");
-		// System.out.println("DAO : " + dao);
+		logger.log(Level.INFO ,"=========================");
+		logger.log(Level.INFO ,"Création du convertisseur de client");
 	}
 
 	/**
@@ -62,7 +53,7 @@ public class ClientConverter extends StrutsTypeConverter {
 	@SuppressWarnings("rawtypes")
 	@Override
 	public Object convertFromString(Map context, String[] values, Class classe) {
-		Client client = null;
+		Client client;
 		client = (Client) dao.getUserById(values[0]);
 		if (client == null) {
 			throw new TypeConversionException("Impossible de convertir la chaine suivante : " + values[0]);
