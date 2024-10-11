@@ -36,6 +36,19 @@ public class ClientConverter extends StrutsTypeConverter {
 	private static final Logger logger = Logger.getLogger(ClientConverter.class.getName());
 
 
+		/**
+	 * Constructeur avec paramêtre pour le ClientConverter.
+	 * 
+	 * Utilisé pour l'injection de dépendance.
+	 * 
+	 * @param dao
+	 */
+	public ClientConverter(IDao dao) {
+		logger.log(Level.INFO ,"=========================");
+		logger.log(Level.INFO ,"Création du convertisseur de client");
+		ClientConverter.dao = dao;
+		logger.log(Level.INFO ,"DAO injectée : " + dao);
+	}
 	
 
 	/**

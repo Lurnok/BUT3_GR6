@@ -36,6 +36,19 @@ public class AccountConverter extends StrutsTypeConverter {
 	private static IDao dao;
 	private static final Logger logger = Logger.getLogger(AccountConverter.class.getName());
 
+		/**
+	 * Constructeur avec paramêtre pour le AccountConverter.
+	 * 
+	 * Utilisé pour l'injection de dépendance.
+	 * 
+	 * @param dao
+	 */
+	public AccountConverter(IDao dao) {
+		logger.log(Level.INFO ,"=========================");
+		logger.log(Level.INFO ,"Création du convertisseur de compte");
+		AccountConverter.dao = dao;
+		logger.log(Level.INFO ,"DAO injectée : " + dao);
+	}
 
 	/**
 	 * 	Constructeur sans paramêtre pour le AccountConverter
