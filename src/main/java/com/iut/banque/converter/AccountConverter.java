@@ -33,17 +33,23 @@ public class AccountConverter extends StrutsTypeConverter {
 	 * Ainsi, au chargement de l'application, trois objets de cette classe sont
 	 * instanciés et seulement le premier a une DAO injectée correctement.
 	 */
-	private static IDao dao;
+	private final IDao dao;
 	private static final Logger logger = Logger.getLogger(AccountConverter.class.getName());
 
-
-	/**
-	 * 	Constructeur sans paramêtre pour le AccountConverter
+		/**
+	 * Constructeur avec paramêtre pour le AccountConverter.
+	 * 
+	 * Utilisé pour l'injection de dépendance.
+	 * 
+	 * @param dao
 	 */
-	public AccountConverter() {
+	public AccountConverter(IDao dao) {
+		this.dao = dao;
 		logger.log(Level.INFO ,"=========================");
 		logger.log(Level.INFO ,"Création du convertisseur de compte");
+		logger.log(Level.INFO, () -> String.format("DAO injectée : %s", dao));
 	}
+
 
 	/**
 	 * Permet la conversion automatique par Struts d'un tableau de chaine vers

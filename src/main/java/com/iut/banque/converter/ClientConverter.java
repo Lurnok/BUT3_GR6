@@ -32,19 +32,24 @@ public class ClientConverter extends StrutsTypeConverter {
 	 * Ainsi, au chargement de l'application, trois objets de cette classe sont
 	 * instanciés et seulement le premier a une DAO injectée correctement.
 	 */
-	private static IDao dao;
+	private final IDao dao;
 	private static final Logger logger = Logger.getLogger(ClientConverter.class.getName());
 
 
-	
-
-	/**
-	 * Constructeur sans paramêtre pour le ClientConverter
+		/**
+	 * Constructeur avec paramêtre pour le ClientConverter.
+	 * 
+	 * Utilisé pour l'injection de dépendance.
+	 * 
+	 * @param dao
 	 */
-	public ClientConverter() {
+	public ClientConverter(IDao dao) {
+		this.dao = dao;
 		logger.log(Level.INFO ,"=========================");
 		logger.log(Level.INFO ,"Création du convertisseur de client");
+		logger.log(Level.INFO, () -> String.format("DAO injectée : %s", dao));
 	}
+	
 
 	/**
 	 * Permet la conversion automatique par Struts d'un tableau de chaine vers
