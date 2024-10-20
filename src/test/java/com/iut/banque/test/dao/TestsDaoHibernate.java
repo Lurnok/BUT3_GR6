@@ -82,10 +82,10 @@ public class TestsDaoHibernate {
 		String id = "NW1010010001";
 		try {
 			Compte compte = daoHibernate.createCompteAvecDecouvert(0, id, 100, client);
-			assertEquals(0, compte.getSolde(), 0.001);
+			assertEquals(0, 0.001, compte.getSolde());
 			assertEquals(id, compte.getNumeroCompte());
 			assertEquals("c.exist", compte.getOwner().getUserId());
-			assertEquals(100, ((CompteAvecDecouvert) compte).getDecouvertAutorise(), 0.001);
+			assertEquals(100, 0.001, ((CompteAvecDecouvert) compte).getDecouvertAutorise());
 			assertTrue(compte instanceof CompteAvecDecouvert);
 		} catch (TechnicalException | IllegalFormatException | IllegalOperationException e) {
 			e.printStackTrace();
@@ -114,7 +114,7 @@ public class TestsDaoHibernate {
 		String id = "NW1010010001";
 		try {
 			Compte compte = daoHibernate.createCompteSansDecouvert(0, id, client);
-			assertEquals(0, compte.getSolde(), 0.001);
+			assertEquals(0, 0.001, compte.getSolde());
 			assertEquals(id, compte.getNumeroCompte());
 			assertEquals("c.exist", compte.getOwner().getUserId());
 			assertTrue(compte instanceof CompteSansDecouvert);
@@ -387,8 +387,6 @@ public class TestsDaoHibernate {
 		assertEquals(false, daoHibernate.isUserAllowed("    ", "TEST PASS"));
 	}
 
-	// TODO À implémenter lorsque disconnect() le sera
-	/*
-	 * @Test public void testDisconnect() { fail("Not yet implemented"); }
-	 */
+	@Test public void testDisconnect() { fail("Not yet implemented"); }
+
 }
