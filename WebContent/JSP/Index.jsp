@@ -10,7 +10,7 @@
 	}
 </script>
 <link rel="stylesheet" href="/_00_ASBank2023/style/style.css" />
-<link href="/_00_ASBank2023/style/favicon.ico" rel="icon"
+<link href="/_00_ASBank2023/style/img.png" rel="icon"
 	type="image/x-icon" />
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
