@@ -1,12 +1,10 @@
 package com.iut.banque.test.dao;
 
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
-
-import java.util.Map;
-
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +21,8 @@ import com.iut.banque.modele.Compte;
 import com.iut.banque.modele.CompteAvecDecouvert;
 import com.iut.banque.modele.CompteSansDecouvert;
 import com.iut.banque.modele.Gestionnaire;
-import com.iut.banque.modele.Utilisateur;
 import com.iut.banque.modele.UserCreationParams;
+import com.iut.banque.modele.Utilisateur;
 
 
 /**
@@ -339,6 +337,11 @@ public class TestsDaoHibernate {
 		}
 		try {
 			daoHibernate.deleteUser(user);
+			try {
+				daoHibernate.deleteUser(user);
+			} catch (TechnicalException e) {
+				return;
+			}
 		} catch (TechnicalException e) {
 			fail("L'utilisateur aurait du être supprimé.");
 		}
@@ -388,5 +391,39 @@ public class TestsDaoHibernate {
 	}
 
 	@Test public void testDisconnect() { fail("Not yet implemented"); }
+
+	@Test
+	public void testUpdateUser() {
+		try {
+			try {
+				UserCreationParams params = new UserCreationParams.Builder()
+					.setNom("NOM")
+					.setPrenom("PRENOM")
+					.setAdresse("ADRESSE")
+					.setMale(true)
+					.setUsrId("g.new")
+					.setUsrPwd("PASS")
+					.setManager(true)
+					.setNumClient("9898989898")
+					.build();
+
+				daoHibernate.createUser(params);
+				Utilisateur user = daoHibernate.getUserById("g.new");
+				daoHibernate.updateUser(user);
+			} catch (IllegalArgumentException | IllegalFormatException e) {
+				fail("Il ne devrait pas y avoir d'exception ici");
+				e.printStackTrace();
+			}
+			Utilisateur gestionnaire = daoHibernate.getUserById("g.new");
+			if (!(gestionnaire instanceof Gestionnaire)) {
+				fail("Cet utilisateur devrait être un gestionnaire.");
+			}
+		} catch (TechnicalException e) {
+			fail("Il ne devrait pas y avoir d'exception ici.");
+		}
+
+		
+
+	}
 
 }

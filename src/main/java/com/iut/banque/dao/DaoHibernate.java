@@ -1,13 +1,11 @@
 package com.iut.banque.dao;
 
-import java.util.logging.Logger;
-import java.util.logging.Level;
-
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
