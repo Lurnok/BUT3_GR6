@@ -15,6 +15,17 @@
 
 	<package name="com.iut.banque" namespace="/" extends="struts-default">
 
+		<interceptors>
+			<interceptor name="authorizationInterceptor" class="com.iut.banque.interceptors.AuthorizationInterceptor"/>
+			<interceptor-stack name="customStack">
+				<interceptor-ref name="authorizationInterceptor"/>
+				<interceptor-ref name="defaultStack"/>
+			</interceptor-stack>
+		</interceptors>
+
+		<default-interceptor-ref name="customStack"/>
+
+
 		<!-- Action générique ou dynamique -->
 		<!-- 1er paramètre indique le chemin du package -->
 		<!-- 2ème paramètre indique la class elle-même -->

@@ -53,7 +53,6 @@ public class TestsCompte {
 		try {
 			compte.crediter(-100);
 			fail("La méthode n'a pas renvoyé d'exception!");
-		} catch (IllegalFormatException ife) {
 		} catch (Exception e) {
 			fail("Exception de type " + e.getClass().getSimpleName()
 					+ " récupérée alors qu'un IllegalFormatException était attendu");
@@ -70,7 +69,6 @@ public class TestsCompte {
 		try {
 			compte = new CompteSansDecouvert("&éþ_ëüú¤", 0, new Client());
 			fail("Exception non renvoyée par le constructeur avec un format de numéro de compte incorrect");
-		} catch (IllegalFormatException ife) {
 		} catch (Exception e) {
 			fail("Exception de type " + e.getClass().getSimpleName()
 					+ " récupérée à la place d'une de type IllegalFormatException");
@@ -83,59 +81,31 @@ public class TestsCompte {
 		if (!Compte.checkFormatNumeroCompte(strNumCompte)) {
 			fail("String " + strNumCompte + " refusée dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroCompteAvecUneSeuleLettreAuDebut() {
-		String strNumCompte = "F0123456789";
+		strNumCompte = "F0123456789";
 		if (Compte.checkFormatNumeroCompte(strNumCompte)) {
 			fail("String " + strNumCompte + " validée dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroCompteAucuneLettreAuDebut() {
-		String strNumCompte = "0123456789";
+		strNumCompte = "0123456789";
 		if (Compte.checkFormatNumeroCompte(strNumCompte)) {
 			fail("String " + strNumCompte + " validée dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroCompteAvecTroisLettresAuDebut() {
-		String strNumCompte = "FRA0123456789";
+		strNumCompte = "FRA0123456789";
 		if (Compte.checkFormatNumeroCompte(strNumCompte)) {
 			fail("String " + strNumCompte + " validée dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroCompteAvecLettresAuMillieu() {
-		String strNumCompte = "FR0123A456789";
+		strNumCompte = "FR0123A456789";
 		if (Compte.checkFormatNumeroCompte(strNumCompte)) {
 			fail("String " + strNumCompte + " validée dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroCompteAvecPlusDeChiffresQueAttendu() {
-		String strNumCompte = "FR00123456789";
+		strNumCompte = "FR00123456789";
 		if (Compte.checkFormatNumeroCompte(strNumCompte)) {
 			fail("String " + strNumCompte + " validée dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroCompteAvecMoinsDeChiffresQueAttendu() {
-		String strNumCompte = "FR123456789";
+		strNumCompte = "FR123456789";
 		if (Compte.checkFormatNumeroCompte(strNumCompte)) {
 			fail("String " + strNumCompte + " validée dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroCompteAvecLettresALaFin() {
-		String strNumCompte = "FR0123456789A";
+		strNumCompte = "FR0123456789A";
 		if (Compte.checkFormatNumeroCompte(strNumCompte)) {
 			fail("String " + strNumCompte + " validée dans le test");
 		}

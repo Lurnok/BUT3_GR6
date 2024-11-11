@@ -10,7 +10,7 @@
 	}
 </script>
 <link rel="stylesheet" href="/_00_ASBank2023/style/style.css" />
-<link href="/_00_ASBank2023/style/favicon.ico" rel="icon"
+<link href="/_00_ASBank2023/style/img.png" rel="icon"
 	type="image/x-icon" />
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,7 +20,7 @@
 	<h1>Bienvenue sur l'application IUT Bank 2023</h1>
 	<p>
 		<img
-			src="https://www.iut-metz.univ-lorraine.fr/images/AdminSite/Logos/Logo_IUT_Metz.UL.small.png"
+			src="/_00_ASBank2023/style/logo_iut_metz.jpg"
 			alt="logo" />
 	</p>
 	<input type="button" value="Information" name="info"

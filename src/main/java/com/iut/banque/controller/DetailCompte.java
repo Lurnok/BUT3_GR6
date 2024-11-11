@@ -1,7 +1,7 @@
 package com.iut.banque.controller;
 
-import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -18,7 +18,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class DetailCompte extends ActionSupport {
 
 	private static final long serialVersionUID = 1L;
-	protected transient BanqueFacade banque;
+	public transient BanqueFacade banque;
 	private String montant;
 	private String error;
 	protected transient Compte compte = null;

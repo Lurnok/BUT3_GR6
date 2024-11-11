@@ -15,80 +15,44 @@ public class TestsClient {
 	 * client
 	 */
 	@Test
-	public void testMethodeCheckFormatUserIdClientCorrect() {
+	public void testMethodeCheckFormatUserIdClient() {
 		String strClient = "a.utilisateur928";
 		if (!Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " refusé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatUserIdClientCommencantParUnChiffre() {
-		String strClient = "32a.abc1";
+		strClient = "32a.abc1";
 		if (Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatUserIdClientCommencantParPlusieursLettres() {
-		String strClient = "aaa.abc1";
+		strClient = "aaa.abc1";
 		if (Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatUserIdClientSansPointSeparateur() {
-		String strClient = "abc1";
+		strClient = "abc1";
 		if (Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatUserIdClientChaineVide() {
-		String strClient = "";
+		strClient = "";
 		if (Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatUserIdClientSansLettresApresLePointSeparateur() {
-		String strClient = "a.138";
+		strClient = "a.138";
 		if (Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatUserIdClientAvecUneSeuleLettreApresLePointSeparateur() {
-		String strClient = "a.a1";
+		strClient = "a.a1";
 		if (!Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " refusé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatUserIdClientAvecCaractereSpecial() {
-		String strClient = "a.bcdé1";
+		strClient = "a.bcdé1";
 		if (Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatUserIdClientAvecTrailingZeros() {
-		String strClient = "a.abc01";
+		strClient = "a.abc01";
 		if (Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatUserIdClientAvecPlusieursPointsSeparateurs() {
-		String strClient = "a.ab.c1";
+		strClient = "a.ab.c1";
 		if (Client.checkFormatUserIdClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
@@ -104,35 +68,19 @@ public class TestsClient {
 		if (!Client.checkFormatNumeroClient(strClient)) {
 			fail("String " + strClient + " refusé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroClientAvecLettre() {
-		String strClient = "12a456789";
+		strClient = "12a456789";
 		if (Client.checkFormatNumeroClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroClientAvecCaractereSpecial() {
-		String strClient = "12#456789";
+		strClient = "12#456789";
 		if (Client.checkFormatNumeroClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroClientAvecMoinsDeNeufChiffres() {
-		String strClient = "12345678";
+		strClient = "12345678";
 		if (Client.checkFormatNumeroClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
-	}
-
-	@Test
-	public void testMethodeCheckFormatNumeroClientAvecPlusDeDixChiffres() {
-		String strClient = "12345678901";
+		strClient = "12345678901";
 		if (Client.checkFormatNumeroClient(strClient)) {
 			fail("String " + strClient + " validé dans le test");
 		}
@@ -223,7 +171,7 @@ public class TestsClient {
 			Client c = new Client("John", "Doe", "20 rue Bouvier", true, "j.doe1", "password", "1234567890");
 			c.addAccount(new CompteAvecDecouvert("FR1234567890",0,42,c));
 			c.addAccount(new CompteSansDecouvert("FR1234567891", 0, c));
-			if (c.getComptesAvecSoldeNonNul().size()!=0){
+			if (!c.getComptesAvecSoldeNonNul().isEmpty()){
 				fail("La méthode a renvoyé un ou plusieurs comptes aveec un solde nul");
 			}
 		} catch (Exception e) {

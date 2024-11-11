@@ -64,6 +64,12 @@
 		<constructor-arg ref="banque" />
       <constructor-arg ref="daoHibernate" />
 	</bean>
-	
-	
+
+	<!-- Bean configuration for LoginManager -->
+	<bean id="loginManager" class="com.iut.banque.facade.LoginManager" scope="singleton">
+		<!-- Injecting the DAO dependency via a setter -->
+		<property name="dao" ref="daoHibernate" />
+	</bean>
+
+
 </beans>
