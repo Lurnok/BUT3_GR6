@@ -1,7 +1,11 @@
 package com.iut.banque.test.facade;
 
-import static org.junit.Assert.fail;
-
+import com.iut.banque.exceptions.IllegalFormatException;
+import com.iut.banque.exceptions.InsufficientFundsException;
+import com.iut.banque.modele.Client;
+import com.iut.banque.modele.Compte;
+import com.iut.banque.modele.CompteAvecDecouvert;
+import com.iut.banque.modele.Utilisateur;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.iut.banque.exceptions.IllegalOperationException;
 import com.iut.banque.facade.BanqueManager;
+
+import java.util.Map;
+
+import static org.junit.Assert.*;
 
 //@RunWith indique à JUnit de prendre le class runner de Spirng
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -161,4 +169,116 @@ public class TestsBanqueManager {
 		}
 	}
 
+	@Test
+	public void TestGetAccountById(){
+		Compte c = bm.getAccountById("AV1011011011");
+		assertEquals("g.descomptes",c.getOwner().getNom());
+	}
+
+	@Test
+	public void TestGetAccountByIdIncorrect(){
+		Compte c = bm.getAccountById("fauxid");
+		assertNull(c);
+	}
+
+	@Test
+	public void TestGetUserById(){
+		Utilisateur u = bm.getUserById("admin");
+		assertEquals("admin", u.getNom());
+	}
+
+	@Test
+	public void TestGetUserByIdIncorrect(){
+		Utilisateur u = bm.getUserById("fauxid");
+		assertNull(u);
+	}
+
+	@Test
+	public void TestCrediterMontantPositif(){
+		Compte c = bm.getAccountById("AV1011011011");
+		double montantInitial = c.getSolde();
+		try {
+			bm.crediter(c, 5);
+			assertEquals(montantInitial + 5, c.getSolde(),0);
+		} catch (IllegalFormatException e) {
+			fail("IllegalFormatException" + e.getMessage());
+		}
+	}
+
+	@Test
+	public void TestCrediterMontantNegatif(){
+		Compte c = bm.getAccountById("AV1011011011");
+		try {
+			bm.crediter(c, -5);
+		} catch (IllegalFormatException e) {
+			fail("IllegalFormatException" + e.getMessage());
+		}
+	}
+
+	@Test
+	public void TestDebiterMontantPositifSansDecouvert(){
+		Compte c = bm.getAccountById("AV1011011011");
+		double montantInitial = c.getSolde();
+		try {
+			bm.debiter(c, 5);
+			assertEquals(montantInitial - 5, c.getSolde(),0);
+		} catch (IllegalFormatException e) {
+			fail("IllegalFormatException" + e.getMessage());
+		} catch (InsufficientFundsException e) {
+			fail("InsufficientFundsException" + e.getMessage());
+        }
+    }
+
+	@Test
+	public void TestDebiterMontantPositifAvecDecouvertAutorise(){
+		Compte c = bm.getAccountById("AV1011011011");
+		double montantInitial = c.getSolde();
+		try {
+			bm.debiter(c, montantInitial + 1);
+			assertEquals(-1, c.getSolde(),0);
+		} catch (IllegalFormatException e) {
+			fail("IllegalFormatException" + e.getMessage());
+		} catch (InsufficientFundsException e) {
+			fail("InsufficientFundsException" + e.getMessage());
+		}
+	}
+
+	@Test
+	public void TestDebiterMontantPositifAvecDecouvertInterdit(){
+		Compte c = bm.getAccountById("BD4242424242");
+		double montantInitial = c.getSolde();
+		try {
+			bm.debiter(c, montantInitial + 1);
+			assertEquals(-1, c.getSolde(),0);
+		} catch (IllegalFormatException e) {
+			fail("IllegalFormatException" + e.getMessage());
+		} catch (InsufficientFundsException e) {
+			fail("InsufficientFundsException" + e.getMessage());
+		}
+	}
+
+	@Test
+	public void testGetAllManagers(){
+		Map<String, Client> managers = bm.getAllManagers();
+		assertNotEquals(null,managers);
+	}
+
+	@Test
+	public void testGetAllCLients(){
+		Map<String, Client> clients = bm.getAllClients();
+		assertNotEquals(null,clients);
+	}
+
+	@Test
+	public void TestChangeDecouvert(){
+		CompteAvecDecouvert c = (CompteAvecDecouvert) bm.getAccountById("AV1011011011");
+		try {
+			bm.changeDecouvert(c, 100);
+			assertEquals(100,c.getDecouvertAutorise(),0);
+		} catch (IllegalFormatException e) {
+            fail("IllegalFormatException" + e.getMessage());
+        } catch (IllegalOperationException e) {
+            fail("IllegalOperationException" + e.getMessage());
+        }
+    }
 }

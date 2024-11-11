@@ -29,6 +29,9 @@
 			<result name="redirectToLogin" type="redirectAction">
 				<param name="actionName">redirectionLogin</param>
 			</result>
+			<result name="redirectAccessDenied" type="redirectAction">
+				<param name="actionName">accessDenied</param>
+			</result>
 		</global-results>
 
 		<!-- Action générique ou dynamique -->
@@ -312,5 +315,9 @@
 			<result>/JSP/CreerUtilisateur.jsp</result>
 		</action>
 
+		<action name="accessDenied">
+			<result>/JSP/AccessDenied.jsp</result>
+		</action>
+		
 	</package>
 </struts>
