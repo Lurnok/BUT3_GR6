@@ -27,7 +27,7 @@ public class TestsResultatSuppression {
         try {
             compte = new CompteSansDecouvert("sabjdölsjnflsöjnf", 40, client);
         } catch (IllegalFormatException e) {
-            e.printStackTrace();
+            // Does nothing because if it does nothing it work
         }
     }
 

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.iut.banque.exceptions.IllegalFormatException;
 import com.iut.banque.exceptions.IllegalOperationException;
 import com.iut.banque.exceptions.InsufficientFundsException;
+import com.iut.banque.exceptions.TechnicalException;
 import com.iut.banque.facade.BanqueManager;
 import com.iut.banque.modele.Client;
 import com.iut.banque.modele.Compte;
@@ -53,8 +54,11 @@ public class TestsBanqueManager {
 			bm.loadAllClients();
 			bm.createClient("t.test1", "password", "test1nom", "test1prenom", "test town", true, "0101010101");
 			fail();
-		} catch (Exception te) {
-			//fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
+		} catch (Exception e) {
+			if(e.getClass() != IllegalFormatException.class && e.getClass() != IllegalOperationException.class && e.getClass() != TechnicalException.class && e.getClass() != IllegalArgumentException.class){
+				fail("Exception de type " + e.getClass().getSimpleName()
+				+ " récupérée alors qu'un IllegalFormatException était attendu");
+			}
 		}
 	}
 
@@ -65,7 +69,6 @@ public class TestsBanqueManager {
 
 			bm.deleteAccount(bm.getAccountById("CADV000000"));
 		} catch (IllegalOperationException e) {
-			e.printStackTrace();
 			fail("IllegalOperationException récupérée : " + e.getStackTrace());
 		} catch (Exception te) {
 			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
@@ -77,8 +80,10 @@ public class TestsBanqueManager {
 		try {
 			bm.deleteAccount(bm.getAccountById("CADNV00000"));
 			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (Exception te) {
-			//fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
+		} catch (Exception e) {
+			if(e.getClass() != IllegalOperationException.class){
+				fail(e.getClass().getName() +  " " + e.getMessage());
+			}
 		}
 	}
 
@@ -87,7 +92,6 @@ public class TestsBanqueManager {
 		try {
 			bm.deleteAccount(bm.getAccountById("CSDV000000"));
 		} catch (IllegalOperationException e) {
-			e.printStackTrace();
 			fail("IllegalOperationException récupérée : " + e.getStackTrace());
 		} catch (Exception te) {
 			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
@@ -99,8 +103,10 @@ public class TestsBanqueManager {
 		try {
 			bm.deleteAccount(bm.getAccountById("CSDNV00000"));
 			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (Exception te) {
-			//fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
+		} catch (Exception e) {
+			if(e.getClass() != IllegalOperationException.class){
+				fail(e.getClass().getName() +  " " + e.getMessage());
+			}
 		}
 	}
 
@@ -111,10 +117,8 @@ public class TestsBanqueManager {
 			bm.loadAllClients();
 			bm.deleteUser(bm.getUserById("g.pasdecompte"));
 		} catch (IllegalOperationException e) {
-			e.printStackTrace();
 			fail("IllegalOperationException récupérée : " + e.getStackTrace());
 		} catch (Exception te) {
-			te.printStackTrace();
 			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
 		}
 	}
@@ -125,9 +129,10 @@ public class TestsBanqueManager {
 		try {
 			bm.deleteUser(bm.getUserById("admin"));
 			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (Exception te) {
-			//fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
-		}
+		} catch (Exception e) {
+			if(e.getClass() != IllegalOperationException.class){
+				fail(e.getClass().getName() +  " " + e.getMessage());
+			}		}
 	}
 
 	@Test
@@ -139,10 +144,8 @@ public class TestsBanqueManager {
 				fail("Les comptes de l'utilisateur sont encore présents dans la base de données");
 			}
 		} catch (IllegalOperationException e) {
-			e.printStackTrace();
 			fail("IllegalOperationException récupérée : " + e.getStackTrace());
 		} catch (Exception te) {
-			te.printStackTrace();
 			fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
 		}
 	}
@@ -152,9 +155,10 @@ public class TestsBanqueManager {
 		try {
 			bm.deleteUser(bm.getUserById("j.doe1"));
 			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (Exception te) {
-			//fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
-		}
+		} catch (Exception e) {
+			if(e.getClass() != IllegalOperationException.class){
+				fail(e.getClass().getName() +  " " + e.getMessage());
+			}		}
 	}
 
 	@Test
@@ -162,8 +166,10 @@ public class TestsBanqueManager {
 		try {
 			bm.deleteUser(bm.getUserById("j.doe1"));
 			fail("Une IllegalOperationException aurait dû être récupérée");
-		} catch (Exception te) {
-			//fail("Une Exception " + te.getClass().getSimpleName() + " a été récupérée");
+		} catch (Exception e) {
+			if(e.getClass() != IllegalOperationException.class){
+				fail(e.getClass().getName() +  " " + e.getMessage());
+			}
 		}
 	}
 
@@ -208,9 +214,11 @@ public class TestsBanqueManager {
 		Compte c = bm.getAccountById("AV1011011011");
 		try {
 			bm.crediter(c, -5);
-			fail("IllegalFormatException");
-		} catch (IllegalFormatException e) {
-			
+			fail("IllegalFormatException expected");
+		} catch (Exception e) {
+			if(e.getClass() != IllegalFormatException.class){
+				fail(e.getClass().getName() +  " " + e.getMessage());
+			}
 		}
 	}
 
@@ -249,23 +257,23 @@ public class TestsBanqueManager {
 		try {
 			bm.debiter(c, montantInitial + 1);
 			assertEquals(-1, c.getSolde(),0);
-		} catch (IllegalFormatException e) {
-			fail("IllegalFormatException" + e.getMessage());
-		} catch (InsufficientFundsException e) {
-			//fail("InsufficientFundsException" + e.getMessage());
+		} catch (Exception e) {
+			if(e.getClass() != InsufficientFundsException.class){
+				fail(e.getClass().getName() +  " " + e.getMessage());
+			}
 		}
 	}
 
 	@Test
 	public void testGetAllManagers(){
 		Map<String, Client> managers = bm.getAllManagers();
-		//assertNotEquals(null,managers);
+		assertNotEquals(null,managers);
 	}
 
 	@Test
 	public void testGetAllCLients(){
 		Map<String, Client> clients = bm.getAllClients();
-		//assertNotEquals(null,clients);
+		assertNotEquals(null,clients);
 	}
 
 	@Test

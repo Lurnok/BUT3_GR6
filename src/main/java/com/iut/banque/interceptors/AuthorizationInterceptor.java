@@ -1,28 +1,31 @@
 package com.iut.banque.interceptors;
-import com.iut.banque.facade.BanqueFacade;
-import com.iut.banque.modele.Gestionnaire;
-import com.iut.banque.modele.Utilisateur;
-import org.apache.struts2.ServletActionContext;
-import com.opensymphony.xwork2.ActionContext;
-import com.opensymphony.xwork2.ActionInvocation;
-import com.opensymphony.xwork2.interceptor.Interceptor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.util.Arrays;
 import java.util.List;
 
+import com.iut.banque.facade.BanqueFacade;
+import com.iut.banque.modele.Gestionnaire;
+import com.iut.banque.modele.Utilisateur;
+import com.opensymphony.xwork2.ActionContext;
+import com.opensymphony.xwork2.ActionInvocation;
+import com.opensymphony.xwork2.interceptor.Interceptor;
+
 public class AuthorizationInterceptor implements Interceptor {
+
+    private BanqueFacade banqueFacade;
+
+    public AuthorizationInterceptor(BanqueFacade banqueFacade) {
+        this.banqueFacade = banqueFacade;
+    }
 
     @Override
     public void destroy() {
-        // TODO Auto-generated method stub
-
+        // Not implemented yet
     }
 
     @Override
     public void init() {
-        // TODO Auto-generated method stub
+        // Not implemented yet
     }
 
     @Override
@@ -35,10 +38,7 @@ public class AuthorizationInterceptor implements Interceptor {
         }
 
         // Récupération de l'user connecté
-        ApplicationContext appContext = WebApplicationContextUtils
-                .getRequiredWebApplicationContext(ServletActionContext.getServletContext());
-        BanqueFacade banque = (BanqueFacade) appContext.getBean("banqueFacade");
-        Utilisateur user = banque.getConnectedUser();
+        Utilisateur user = banqueFacade.getConnectedUser();
 
         // Pas d'user connecté
         if (user == null) {
@@ -57,6 +57,4 @@ public class AuthorizationInterceptor implements Interceptor {
         // allow
         return inv.invoke();
     }
-
-
 }

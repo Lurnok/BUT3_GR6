@@ -1,5 +1,6 @@
 package com.iut.banque.modele;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Component;
@@ -11,9 +12,9 @@ import com.iut.banque.exceptions.InsufficientFundsException;
 @Component
 public class Banque {
 
-	private Map<String, Client> clients;
-	private Map<String, Gestionnaire> gestionnaires;
-	private Map<String, Compte> accounts;
+	private Map<String, Client> clients = new HashMap<>();
+	private Map<String, Gestionnaire> gestionnaires = new HashMap<>();
+	private Map<String, Compte> accounts  = new HashMap<>();
 
 	public Banque() {
 		// C'est vide.
