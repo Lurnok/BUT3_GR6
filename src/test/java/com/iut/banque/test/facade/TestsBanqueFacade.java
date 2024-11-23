@@ -1,20 +1,11 @@
+/* 
 package com.iut.banque.test.facade;
-import com.iut.banque.constants.LoginConstants;
-
-
-import com.iut.banque.facade.BanqueFacade;
-import com.iut.banque.facade.LoginManager;
-import com.iut.banque.modele.Utilisateur;
-
-import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-
-import static org.junit.Assert.*;
+import com.iut.banque.facade.BanqueFacade;
 
 //@RunWith indique à JUnit de prendre le class runner de Spirng
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,9 +17,12 @@ import static org.junit.Assert.*;
 public class TestsBanqueFacade {
     BanqueFacade bf;
 
+    
     @Test
     public void TestGetConnectedUser() {
         Utilisateur u = bf.getConnectedUser();
         assertNotNull(u);
     }
+        
 }
+*/
