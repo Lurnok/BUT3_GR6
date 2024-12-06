@@ -80,8 +80,10 @@ public class TestsCompteAvecDecouvert {
 		 */
 		try {
 			compte.debiter(250);
-		} catch (InsufficientFundsException e) {
-			
+		} catch (Exception e) {
+			if(e.getClass() != InsufficientFundsException.class){
+				fail();
+			}
 		}
 	}
 

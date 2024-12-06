@@ -18,7 +18,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class DetailCompte extends ActionSupport {
 
 	private static final long serialVersionUID = 1L;
-	public static BanqueFacade banque;
+	protected transient BanqueFacade banque;
 	private String montant;
 	private String error;
 	protected transient Compte compte = null;
@@ -38,7 +38,7 @@ public class DetailCompte extends ActionSupport {
 		logger.log(Level.INFO, "In Constructor from DetailCompte class ");
 		ApplicationContext context = WebApplicationContextUtils
 				.getRequiredWebApplicationContext(ServletActionContext.getServletContext());
-		DetailCompte.banque = (BanqueFacade) context.getBean("banqueFacade");
+		this.banque = (BanqueFacade) context.getBean("banqueFacade");
 	}
 
 	/**
