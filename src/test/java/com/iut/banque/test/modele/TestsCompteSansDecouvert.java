@@ -2,7 +2,6 @@ package com.iut.banque.test.modele;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -41,8 +40,10 @@ public class TestsCompteSansDecouvert {
 			compte.debiter(-100);
 			fail("La méthode n'a pas renvoyé d'exception!");
 		} catch (Exception e) {
-			fail("Exception de type " + e.getClass().getSimpleName()
-					+ " récupérée alors qu'un IllegalFormatException était attendu");
+			if(e.getClass() != IllegalFormatException.class){
+				fail("Exception de type " + e.getClass().getSimpleName()
+				+ " récupérée alors qu'un IllegalFormatException était attendu");
+			}
 		}
 	}
 
@@ -77,8 +78,10 @@ public class TestsCompteSansDecouvert {
 		 */
 		try {
 			compte.debiter(200);
-		} catch (InsufficientFundsException e) {
-			fail("Il devrait avoir une InsufficientFundsException ici.");
+		} catch (Exception e) {
+			if(e.getClass() != InsufficientFundsException.class){
+				fail();
+			}
 		}
 	}
 

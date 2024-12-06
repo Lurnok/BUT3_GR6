@@ -52,5 +52,5 @@ replay_pid*
 /.nb-gradle/
 update.sh
 applicationContext.xml
-
+/target
 

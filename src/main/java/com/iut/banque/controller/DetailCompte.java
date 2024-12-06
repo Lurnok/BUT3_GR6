@@ -18,7 +18,7 @@ import com.opensymphony.xwork2.ActionSupport;
 public class DetailCompte extends ActionSupport {
 
 	private static final long serialVersionUID = 1L;
-	public transient BanqueFacade banque;
+	protected transient BanqueFacade banque;
 	private String montant;
 	private String error;
 	protected transient Compte compte = null;
