@@ -2,12 +2,9 @@ package com.iut.banque.test.modele;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 import org.junit.Before;
 import org.junit.Test;
 
-import com.iut.banque.exceptions.IllegalFormatException;
 import com.iut.banque.modele.Utilisateur;
 
 public class TestsUtilisateurs {
