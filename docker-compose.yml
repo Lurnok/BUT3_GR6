@@ -3,7 +3,7 @@ services:
     build:
       dockerfile: Dockerfile
     ports:
-      - "8080:8080" # Mappe le port 8080 du conteneur à 8080 sur l'hôte
+      - 19000:8080 # Mappe le port 8080 du conteneur à 8080 sur l'hôte
 
 networks:
   webapp-network:

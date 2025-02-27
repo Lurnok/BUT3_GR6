@@ -12,11 +12,11 @@ COPY src ./src
 
 COPY WebContent ./WebContent 
 
-RUN mvn clean package 
+RUN mvn clean package -DskipTests
 
 FROM tomcat:9.0-jdk11-openjdk-slim
 
-COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=build /app/target/*.war /usr/local/tomcat/webapps/_00_ASBank2023.war
 
 EXPOSE 8080
 

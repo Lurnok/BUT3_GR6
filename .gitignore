@@ -54,3 +54,4 @@ update.sh
 applicationContext.xml
 /target
 
+.vscode
